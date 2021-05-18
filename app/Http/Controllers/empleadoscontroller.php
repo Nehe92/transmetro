@@ -11,6 +11,11 @@ class empleadoscontroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
          $empleados = DB::select('SELECT e.id, e.nombre, e.edad, e.profesion, e.telefono, e.direccion, r.roll_empleado FROM empleados e inner join rolls r on e.id_roll = r.id Order by r.roll_empleado ASC');

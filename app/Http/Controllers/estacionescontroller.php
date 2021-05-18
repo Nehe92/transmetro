@@ -11,6 +11,12 @@ class estacionescontroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $estaciones = DB::select('SELECT e.id, e.nombre, e.cant_usuarios, m.nombre as municipio FROM estaciones e inner join municipios m where e.id_municipio = m.id;');

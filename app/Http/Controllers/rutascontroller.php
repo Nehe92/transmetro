@@ -11,6 +11,11 @@ class rutascontroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $rutas = DB::select('SELECT e.id, e.nombre, m.nombre as municipio FROM rutas e inner join municipios m on e.id_municipio = m.id;');

@@ -11,6 +11,11 @@ class parqueoscontroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $parqueos = DB::select('SELECT e.id, e.nombre, m.nombre as estacion FROM parqueos e inner join estaciones m where e.id_estacion = m.id;');

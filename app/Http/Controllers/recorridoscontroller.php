@@ -12,6 +12,11 @@ class recorridoscontroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $recorridos = DB::select('SELECT e.id, e.cant_pasajeros, e.h_salida, e.h_entrada, b.placa as bus , r.nombre as ruta  
@@ -146,8 +151,10 @@ class recorridoscontroller extends Controller
             }
             return back();
         }
-        else if(($request->pasajero_arriba+$pasajeros-$request->pasajero_abajo) >= ($capacidad*0.25)&&($request->pasajero_arriba+$pasajeros-$request->pasajero_abajo) < ($capacidad*0.5)){
-            DB::TABLE('detalle_recorridos')->where('id',$request->id_recorrido)->update(['cant_pasajeros'=>($request->pasajero_arriba-$request->pasajero_abajo+$pasajeros)]);
+        else if(($request->pasajero_arriba+$pasajeros-$request->pasajero_abajo) >= ($capacidad*0.25)&&
+        ($request->pasajero_arriba+$pasajeros-$request->pasajero_abajo) < ($capacidad*0.5)){
+            DB::TABLE('detalle_recorridos')->where('id',$request->id_recorrido)->update(['cant_pasajeros'=>
+            ($request->pasajero_arriba-$request->pasajero_abajo+$pasajeros)]);
             DB::TABLE('tiempos_recorridos')->where('id',$id)->update(['h_salida'=>Carbon::now()]);
 
             $detalle_rutas=DB::SELECT('SELECT * FROM detalle_rutas where id_ruta = :id AND id_estacion != :esta AND orden > :mayor
@@ -166,7 +173,8 @@ class recorridoscontroller extends Controller
             return back();
         }
         else if(($request->pasajero_arriba+$pasajeros-$request->pasajero_abajo) >= ($capacidad*0.5)){
-            DB::TABLE('detalle_recorridos')->where('id',$request->id_recorrido)->update(['cant_pasajeros'=>($request->pasajero_arriba-$request->pasajero_abajo+$pasajeros)]);
+            DB::TABLE('detalle_recorridos')->where('id',$request->id_recorrido)->update(['cant_pasajeros'
+            =>($request->pasajero_arriba-$request->pasajero_abajo+$pasajeros)]);
             DB::TABLE('tiempos_recorridos')->where('id',$id)->update(['h_salida'=>Carbon::now()]);
 
             $detalle_rutas=DB::SELECT('SELECT * FROM detalle_rutas where id_ruta = :id AND id_estacion != :esta AND orden > :mayor
